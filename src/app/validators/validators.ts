@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators, AbstractControl} from '@angular/forms';
 
 @Injectable()
 export class CustomValidators {
@@ -33,7 +33,7 @@ export class CustomValidators {
     };
   }
 
-  checkDirtyControl(control: FormControl) {
+  checkDirtyControl(control: AbstractControl) {
     return (control.dirty || control.touched);
   }
 
