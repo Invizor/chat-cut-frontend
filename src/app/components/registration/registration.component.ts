@@ -47,7 +47,6 @@ export class RegistrationComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log("this.viewModelUser", this.viewModelUser);
   }
 
   getErrorText(controlField: FormControl, groupField?: FormGroup) {
@@ -63,7 +62,6 @@ export class RegistrationComponent implements OnInit {
       }
     }
     if (groupField) {
-      console.log("groupField", groupField);
       if (groupField.hasError('isNotEquality')) {
         return 'passwords is not equality';
       }

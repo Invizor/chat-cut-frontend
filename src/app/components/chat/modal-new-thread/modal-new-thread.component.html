@@ -1,0 +1,20 @@
+<div class="c-modal-new-thread">
+  <h1 mat-dialog-title>{{dataModal.user.username || ''}}</h1>
+  <div mat-dialog-content>
+    <p class="modal-text">Please, enter login user, which you want to write: </p>
+    <mat-form-field>
+      <input matInput [(ngModel)]="valueInput">
+    </mat-form-field>
+    <button class="add-user-button mat-fab mat-primary" mat-button (click)="searchUser()">Add</button>
+    <div *ngIf="viewListAddUser && viewListAddUser.length > 0" class="container-users-list">
+      <div class="users-list-title modal-text">Users:</div>
+      <div class="users-list">{{viewListAddUser | listCommaCurrentField: 'username'}}</div>
+    </div>
+    <div *ngIf="viewListAddUser && viewListAddUser.length === 0" class="list-without-users">
+      Not users selected
+    </div>
+  </div>
+  <div mat-dialog-actions>
+    <button class="create-thread-button mat-primary" mat-button mat-raised-button>Create Thread</button>
+  </div>
+</div>

@@ -26,7 +26,7 @@ export class ThreadService {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
-        'authorization': this.authService.token || ''
+        'authorization': this.authService.getToken() || ''
       }),
       params: {
         'id': idThread
@@ -50,7 +50,7 @@ export class ThreadService {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
-        'authorization': this.authService.token || ''
+        'authorization': this.authService.getToken() || ''
       }),
       params: {}
     };
@@ -79,7 +79,7 @@ export class ThreadService {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
-        'authorization': this.authService.token || ''
+        'authorization': this.authService.getToken() || ''
       }),
       params: {}
     };
@@ -103,12 +103,12 @@ export class ThreadService {
     });
   }
 
-  public getThreads(idUser: string) {
+  public getThreads(idUser: string): Observable<Thread[]> {
     const url = AppSettings.API_URL + '/thread/get';
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
-        'authorization': this.authService.token || ''
+        'authorization': this.authService.getToken() || ''
       }),
       params: {
         'iduser': idUser
@@ -118,10 +118,10 @@ export class ThreadService {
     return new Observable(observer => {
       this.apiService.get(url, httpOptions)
         .subscribe((data) => {
-          if (data) {
+          if (data && Array.isArray(data.listThreads)) {
             this.listThreads = data.listThreads;
           }
-          observer.next(data);
+          observer.next(data.listThreads);
           observer.complete();
         },
         (error) => {

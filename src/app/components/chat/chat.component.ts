@@ -1,47 +1,62 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DoCheck } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { ThreadService } from '../../services/thread.service';
 import { MessageService } from '../../services/message.service';
+import { User } from '../../models/user.model';
+import { Thread } from '../../models/thread.model';
+import { Message } from '../../models/message.model';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import {ModalNewThreadComponent} from './modal-new-thread/modal-new-thread.component';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit, DoCheck {
+  user: User;
+  listThreads: Thread[];
 
   constructor(
     private authService: AuthService,
     private threadService: ThreadService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    public dialog: MatDialog
   ) {
   }
 
   ngOnInit(): void {
-    // this.authService.registerUser({
-    //   username: 'Tonya',
-    //   password: '12345678',
-    //   email: 'tonya@mail.ru',
-    //   name: 'Антонина',
-    //   surname: 'Суркова'
-    // });
-    //this.authService.getUser();
-    // this.authService.loginUser('tonya@mail.ru', '12345678').subscribe(result => {
-    //   console.log("result", result);
-    // });
-    // this.threadService.getThread('5a9e6d8ff81b3b03df2e6de4').subscribe(result => {
-    //   console.log("result", result);
-    // },
-    // (error) => {
-    //   console.log("error", error);
-    // });
+    this.authService.getUser()
+      .subscribe(user => {
+        this.user = user;
+        if (this.user) {
+          this.threadService.getThreads(this.user['_id'])
+            .subscribe(listThreads => {
+              this.listThreads = listThreads;
+              this.listThreads.forEach(thread => {
+                this.messageService.getMessages(thread['_id'])
+                  .subscribe(messageList => {
+                    thread.messageList = messageList;
+                  });
+              });
+            });
+        }
+      });
+  }
 
-    // this.messageService.createMessage('5a9e6d8ff81b3b03df2e6de4', 'Привет мой дорогой друг').subscribe(result => {
-    //     console.log("result", result);
-    //   },
-    //   (error) => {
-    //     console.log("error", error);
-    //   });
+  openDialogNewThread(): void {
+    let dialogRef = this.dialog.open(ModalNewThreadComponent, {
+      width: '300px',
+      data: { user: this.user }
+    });
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   console.log('The dialog was closed');
+    // });
+  }
+
+  ngDoCheck(): void {
+
   }
 
 }

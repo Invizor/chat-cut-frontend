@@ -12,6 +12,7 @@ import { ApiService } from './services/api.service';
 import { AuthService } from './services/auth.service';
 import { MessageService } from './services/message.service';
 import { ThreadService } from './services/thread.service';
+import { ListCommaCurrentField } from './pipe/list-comma.pipe';
 
 import { AppComponent } from './app.component';
 import { ChatComponent } from './components/chat/chat.component';
@@ -19,6 +20,7 @@ import { AuthorizationComponent } from './components/authorization/authorization
 import { RegistrationComponent } from './components/registration/registration.component';
 import { CustomValidators } from './validators/validators';
 import { SuccessIconComponent } from './components/common/success-icon/success-icon.component';
+import { ModalNewThreadComponent } from './components/chat/modal-new-thread/modal-new-thread.component';
 
 import {
   MatAutocompleteModule,
@@ -100,7 +102,9 @@ export class MaterialModule {}
     ChatComponent,
     AuthorizationComponent,
     RegistrationComponent,
-    SuccessIconComponent
+    SuccessIconComponent,
+    ModalNewThreadComponent,
+    ListCommaCurrentField
   ],
   imports: [
     BrowserModule,
@@ -121,6 +125,7 @@ export class MaterialModule {}
     MessageService,
     CustomValidators
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ModalNewThreadComponent]
 })
 export class AppModule { }

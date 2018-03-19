@@ -45,7 +45,7 @@ export class MessageService {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
-        'authorization': this.authService.token || ''
+        'authorization': this.authService.getToken() || ''
       }),
       params: {}
     };
@@ -74,7 +74,7 @@ export class MessageService {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
-        'authorization': this.authService.token || ''
+        'authorization': this.authService.getToken() || ''
       }),
       params: {}
     };
@@ -97,12 +97,12 @@ export class MessageService {
     });
   }
 
-  public getMessages(idThread: string) {
+  public getMessages(idThread: string): Observable<Message[]> {
     const url = AppSettings.API_URL + '/message/';
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
-        'authorization': this.authService.token || ''
+        'authorization': this.authService.getToken() || ''
       }),
       params: {
         'idThread': idThread
@@ -129,7 +129,7 @@ export class MessageService {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
-        'authorization': this.authService.token || ''
+        'authorization': this.authService.getToken() || ''
       }),
       params: {}
     };

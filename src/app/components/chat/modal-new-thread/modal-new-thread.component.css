@@ -1,0 +1,36 @@
+.c-modal-new-thread .mat-dialog-title {
+  text-align: center;
+  color: #3f51b5;
+}
+
+.c-modal-new-thread .mat-dialog-content {
+  text-align: center;
+}
+
+.c-modal-new-thread .mat-dialog-content .mat-form-field {
+  width: 100%;
+}
+
+.c-modal-new-thread .mat-dialog-content .add-user-button {
+  margin-bottom: 10px;
+}
+
+.c-modal-new-thread .mat-dialog-content .container-users-list {
+  width: 100%
+}
+
+.c-modal-new-thread .mat-dialog-content .list-without-users {
+
+}
+
+.c-modal-new-thread .mat-dialog-content .container-users-list .users-list-title {
+
+}
+
+.c-modal-new-thread .mat-dialog-content .container-users-list .users-list {
+
+}
+
+.c-modal-new-thread .mat-dialog-actions .create-thread-button {
+  width: 100%;
+}

@@ -17,17 +17,19 @@ export class AuthService {
   }
 
   private init() {
-    console.log("this.checkToken()", this.checkToken());
     if (this.checkToken()) {
       this.getUser()
         .subscribe(user => {
-          console.log("user", user);
         });
     }
   }
 
   public checkAuthorization() {
     return Boolean(this.checkToken());
+  }
+
+  public getUserLocalData() {
+    return this.user;
   }
 
   public checkToken() {
@@ -44,7 +46,6 @@ export class AuthService {
     if (typeof(tokenLS) === 'string' && tokenLS.length > 0) {
       tokenResult = tokenLS;
     }
-    console.log("tokenResult", tokenResult);
     return tokenResult;
   }
 
@@ -56,13 +57,10 @@ export class AuthService {
   }
 
   public validateAuthData(email: string, password: string) {
-    console.log("email", email);
-    console.log("password", password);
     let isValid = true;
     const errorObj = {};
     const regexpEmail = new RegExp('^[-._a-z0-9]+@(?:[a-z0-9][-a-z0-9]+\.)+[a-z]{2,6}$');
     const resultTestEmailList = regexpEmail.exec(email);
-    console.log("resultTestEmailList", resultTestEmailList);
     let resultTestValue = '';
     if (Array.isArray(resultTestEmailList) && resultTestEmailList.length > 0) {
       resultTestValue = resultTestEmailList[0];
@@ -79,7 +77,7 @@ export class AuthService {
     return {isValid: isValid, errorObj: errorObj};
   }
 
-  public getUser() {
+  public getUser(): Observable<User> {
     const url = AppSettings.API_URL + '/user/';
     const httpOptions = {
       headers: new HttpHeaders({
@@ -91,9 +89,9 @@ export class AuthService {
 
     return new Observable(observer => {
       this.apiService.get(url, httpOptions)
-        .subscribe(user => {
-          this.user = user;
-          observer.next(user);
+        .subscribe(data => {
+          this.user = data.user;
+          observer.next(data.user);
           observer.complete();
         },
         (error) => {
@@ -154,6 +152,30 @@ export class AuthService {
           observer.error(error);
           observer.complete();
         });
+    });
+  }
+
+  public findUser(username: string): Observable<string> {
+    const url = AppSettings.API_URL + '/user/find';
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'authorization': this.getToken() || ''
+      })
+    };
+    const bodyParams = {
+      username: username
+    };
+    return new Observable(observer => {
+      this.apiService.post(url, bodyParams, httpOptions)
+        .subscribe(result => {
+            observer.next(result.id);
+            observer.complete();
+          },
+          (error) => {
+            observer.error(error);
+            observer.complete();
+          });
     });
   }
 
