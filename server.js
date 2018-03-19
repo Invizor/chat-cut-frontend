@@ -1,9 +1,20 @@
-//Install express server
 const express = require('express');
-const app = express();
+const bodyParser = require('body-parser');
 
-// Serve only the static files form the dist directory
+let app = express();
+
+app.use(bodyParser.urlencoded({ extended : true }));
+app.use(bodyParser.json());
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header('Access-Control-Allow-Methods', 'DELETE, PUT');
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 app.use(express.static(__dirname + '/dist'));
 
-// Start the app by listening on the default Heroku port
-app.listen(process.env.PORT || 8080);
+app.listen(process.env.PORT || 8080, '0.0.0.0', () => {
+  console.log(`Express server listening on port ${process.env.PORT || 3000}`);
+});
