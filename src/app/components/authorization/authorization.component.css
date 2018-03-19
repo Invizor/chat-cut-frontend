@@ -1,0 +1,91 @@
+.c-authorization {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #efedf0;
+}
+
+.c-authorization .header {
+  width: 100%;
+  height: 250px;
+  background: #5fadf4;
+  box-shadow: 0 0 2px rgba(0,0,0,0.5);
+}
+
+.c-authorization .content {
+  position: relative;
+  margin: -100px auto 0;
+  background: #ffffff;
+  border: 1px solid;
+  height: 300px;
+  box-shadow: 0 0 6px rgba(0,0,0,0.5);
+}
+
+@media(min-width: 768px) {
+  .c-authorization .content {
+    width: 500px;
+    padding: 50px 40px 60px 40px;
+  }
+}
+
+@media(max-width: 767px) {
+  .c-authorization .content {
+    width: 300px;
+    padding: 50px 20px 60px 20px;
+  }
+}
+
+.c-authorization .content .register-link {
+  cursor: pointer;
+  position: absolute;
+  top:10px;
+  color: #888;
+}
+
+@media(min-width: 768px) {
+  .c-authorization .content .register-link {
+    right: 40px;
+  }
+}
+
+@media(max-width: 767px) {
+  .c-authorization .content .register-link {
+    right: 20px;
+  }
+}
+
+.c-authorization .content .register-link:hover {
+  color: #5fadf4;
+}
+
+.c-authorization .authorization-error {
+  height: 350px;
+}
+
+.c-authorization .authorization-error .authorization-error-text{
+  color: #ed0b26;
+  height: 50px;
+}
+
+.c-authorization .content .input-field {
+  width: 100%;
+  height: 70px;
+}
+
+.c-authorization .content .send-button {
+  text-align: center;
+  padding-top: 29px;
+}
+
+.c-authorization .content .send-button i{
+  font-size: 45px;
+  transition: color 1s, font-size 1s;
+}
+
+.c-authorization .content .send-button i:hover{
+  font-size: 47px;
+  color: #5fadf4;
+  cursor: pointer;
+}
+

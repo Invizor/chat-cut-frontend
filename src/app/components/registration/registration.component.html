@@ -1,0 +1,77 @@
+<div class="c-registration">
+  <div class="header"></div>
+  <div class="content" [ngClass]="{'registration-error': isErrorAuthorization}">
+    <a class="authorization-link" routerLink="/authorization">
+      Authorization
+    </a>
+    <form [formGroup]="viewModelUser" (ngSubmit)="sendDataForm()">
+      <mat-form-field class="input-field">
+        <input matInput type="text" formControlName="email" placeholder="email"/>
+        <div class="check-fields">
+          <app-succes-icon
+            [isShow]="customValidators.checkDirtyControl(viewModelUser.get(['email']))"
+            [status]="!(viewModelUser.get(['email']).invalid)">
+          </app-succes-icon>
+        </div>
+        <mat-error *ngIf="viewModelUser.get('email').invalid">
+          {{getErrorText(viewModelUser.get('email'))}}
+        </mat-error>
+      </mat-form-field>
+      <div formGroupName="passwords">
+        <mat-form-field class="input-field">
+          <input matInput type="password" formControlName="password" placeholder="password"/>
+          <div class="check-fields">
+            <app-succes-icon
+              [isShow]="customValidators.checkDirtyControl(viewModelUser.get(['passwords', 'password']))"
+              [status]="!(viewModelUser.get(['passwords', 'password']).invalid)">
+            </app-succes-icon>
+          </div>
+          <mat-error *ngIf="viewModelUser.get(['passwords', 'password']).invalid">
+            {{getErrorText(viewModelUser.get(['passwords', 'password']))}}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="input-field">
+          <input matInput type="password" formControlName="repeat" placeholder="repeat password" [errorStateMatcher]="matcherRepeatPassword"/>
+          <div class="check-fields">
+            <app-succes-icon
+              [isShow]="customValidators.checkDirtyControl(viewModelUser.get(['passwords', 'repeat']))"
+              [status]="!(viewModelUser.get(['passwords', 'repeat']).invalid || viewModelUser.get(['passwords']).hasError('isNotEquality'))">
+            </app-succes-icon>
+          </div>
+          <mat-error *ngIf="viewModelUser.get(['passwords', 'repeat']).invalid || viewModelUser.get(['passwords']).hasError('isNotEquality')">
+            {{getErrorText(viewModelUser.get(['passwords', 'repeat']), viewModelUser.get(['passwords']))}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <mat-form-field class="input-field">
+        <input matInput type="text" formControlName="username" placeholder="username"/>
+        <div class="check-fields">
+          <app-succes-icon
+            [isShow]="customValidators.checkDirtyControl(viewModelUser.get(['username']))"
+            [status]="!(viewModelUser.get(['username']).invalid)">
+          </app-succes-icon>
+        </div>
+        <mat-error *ngIf="viewModelUser.get('username').invalid">
+          {{getErrorText(viewModelUser.get('username'))}}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="input-field">
+        <input matInput type="text" formControlName="name" placeholder="name"/>
+        <mat-error *ngIf="viewModelUser.get('name').invalid">
+          {{getErrorText(viewModelUser.get('name'))}}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="input-field">
+        <input matInput type="text" formControlName="surname" placeholder="surname"/>
+        <mat-error *ngIf="viewModelUser.get('surname').invalid">
+          {{getErrorText(viewModelUser.get('surname'))}}
+        </mat-error>
+      </mat-form-field>
+      <div class="container-button">
+        <button type="submit" class="send-button">
+          <i class="material-icons">send</i>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

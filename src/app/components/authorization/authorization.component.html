@@ -1,0 +1,22 @@
+<div class="c-authorization">
+  <div class="header"></div>
+  <div class="content" [ngClass]="{'authorization-error': isErrorAuthorization}">
+    <a class="register-link" routerLink="/register">
+      Register
+    </a>
+    <div *ngIf="isErrorAuthorization" class="authorization-error-text">
+      Please check the spelling of your login and password
+    </div>
+    <mat-form-field class="input-field">
+      <input matInput [formControl]="viewModelUser.email" placeholder="email"/>
+      <mat-error *ngIf="viewModelUser.email.invalid">{{getErrorEmail()}}</mat-error>
+    </mat-form-field>
+    <mat-form-field class="input-field">
+      <input matInput type="password" [formControl]="viewModelUser.password" placeholder="password"/>
+      <mat-error *ngIf="viewModelUser.password.invalid">{{getErrorPassword()}}</mat-error>
+    </mat-form-field>
+    <div class="send-button">
+      <i class="material-icons" (click)="sendAuthorizationData()">send</i>
+    </div>
+  </div>
+</div>

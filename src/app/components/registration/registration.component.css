@@ -1,0 +1,105 @@
+.c-registration {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #efedf0;
+}
+
+.c-registration .header {
+  width: 100%;
+  height: 250px;
+  background: #5fadf4;
+  box-shadow: 0 0 2px rgba(0,0,0,0.5);
+}
+
+.c-registration .content {
+  position: relative;
+  margin: -100px auto 0;
+  background: #ffffff;
+  border: 1px solid;
+  height: 600px;
+  box-shadow: 0 0 6px rgba(0,0,0,0.5);
+}
+
+@media(min-width: 768px) {
+  .c-registration .content {
+    width: 500px;
+    padding: 50px 40px 60px 40px;
+  }
+}
+
+@media(max-width: 767px) {
+  .c-registration .content {
+    width: 300px;
+    padding: 50px 20px 60px 20px;
+  }
+}
+
+.c-registration .content .authorization-link {
+  cursor: pointer;
+  position: absolute;
+  top:10px;
+  color: #888;
+}
+
+@media(min-width: 768px) {
+  .c-registration .content .authorization-link {
+    right: 40px;
+  }
+}
+
+@media(max-width: 767px) {
+  .c-registration .content .authorization-link {
+    right: 20px;
+  }
+}
+
+.c-registration .content .authorization-link:hover {
+  color: #5fadf4;
+}
+
+.c-registration .registration-error {
+  height: 350px;
+}
+
+.c-registration .registration-error .registration-error-text{
+  color: #ed0b26;
+  height: 50px;
+}
+
+.c-registration .content .input-field {
+  width: 100%;
+  height: 70px;
+}
+
+.c-registration .content .container-button {
+  text-align: center;
+  width: 100%;
+}
+
+.c-registration .content .container-button .send-button {
+  padding-top: 29px;
+  border:none;
+  outline: 0 !important;
+}
+
+.c-registration .content .container-button .send-button i{
+  font-size: 45px;
+  transition: color 1s, font-size 1s;
+}
+
+.c-registration .content .container-button .send-button i:hover{
+  font-size: 47px;
+  color: #5fadf4;
+  cursor: pointer;
+}
+
+.c-registration .content .check-fields {
+  position: absolute;
+  right: 0px;
+  top: 5px;
+}
+
+
+
