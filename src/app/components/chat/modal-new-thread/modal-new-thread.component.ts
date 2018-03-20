@@ -9,8 +9,8 @@ import {AuthService} from '../../../services/auth.service';
   styleUrls: ['./modal-new-thread.component.css']
 })
 export class ModalNewThreadComponent implements OnInit {
-  private valueInput = '';
-  private viewListAddUser = [];
+  public valueInput = '';
+  public viewListAddUser = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public dataModal: any,
