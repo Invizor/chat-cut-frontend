@@ -85,7 +85,7 @@ export class RegistrationComponent implements OnInit {
             duration: 3000,
           });
           setTimeout(() => {
-            this.router.navigate(['/authorization'], { relativeTo: this.route });
+            this.router.navigate(['/chat'], { relativeTo: this.route });
           }, 2000);
         }, error => {
           const message = 'Registration error';

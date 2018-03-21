@@ -5,6 +5,8 @@ import {AppSettings} from '../../app-config';
 import {HttpClient, HttpParams, HttpHeaders} from '@angular/common/http';
 import {AuthService} from './auth.service';
 import {Observable} from 'rxjs/Observable';
+import {Thread} from '../models/thread.model';
+import {ReplaySubject} from 'rxjs/ReplaySubject';
 
 @Injectable()
 export class MessageService {
@@ -20,134 +22,58 @@ export class MessageService {
   private init() {
   }
 
-  public addMessageLocal(idThread: string, message: Message) {
-    if (typeof(idThread) === 'string' && message) {
-      if (Array.isArray(this.listThreads[idThread])) {
-        this.listThreads[idThread].push(message);
-      } else {
-        this.listThreads[idThread] = [message];
-      }
-    }
-  }
-
-  public removeMessageLocal(idThread: string, idMessage: string) {
-    if (typeof(idThread) === 'string' && typeof(idMessage) === 'string') {
-      if (Array.isArray(this.listThreads[idThread])) {
-        this.listThreads = this.listThreads[idThread].filter(itemMessage => {
-          return itemMessage._id !== idMessage;
-        });
-      }
-    }
-  }
-
   public createMessage(idThread: string, text: string) {
     const url = AppSettings.API_URL + '/message/create';
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'authorization': this.authService.getToken() || ''
-      }),
-      params: {}
-    };
     const bodyParams = {
       idThread: idThread,
       text: text
     };
-    return new Observable(observer => {
-      this.apiService.post(url, bodyParams, httpOptions)
-        .subscribe((data) => {
-            if (data && data.message) {
-              this.addMessageLocal(idThread, data.message);
-            }
-            observer.next(data);
-            observer.complete();
-          },
-          (error) => {
-            observer.error(error);
-            observer.complete();
-          });
-    });
+    return this.apiService.post(url, bodyParams)
+        .flatMap((data) => {
+          return this.getMessages(idThread);
+        });
   }
 
   public removeMessage(idMessage: string) {
     const url = AppSettings.API_URL + '/message/remove';
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'authorization': this.authService.getToken() || ''
-      }),
-      params: {}
-    };
     const bodyParams = {
       id: idMessage
     };
-    return new Observable(observer => {
-      this.apiService.post(url, bodyParams, httpOptions)
-        .subscribe((data) => {
-            if (data && data.message) {
-              this.removeMessageLocal(data.message.idThread, idMessage);
-            }
-            observer.next(data);
-            observer.complete();
-          },
-          (error) => {
-            observer.error(error);
-            observer.complete();
-          });
-    });
+    return this.apiService.post(url, bodyParams)
+      .flatMap((data) => {
+        return this.getMessages(data.message.idThread);
+      });
   }
 
   public getMessages(idThread: string): Observable<Message[]> {
     const url = AppSettings.API_URL + '/message/';
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'authorization': this.authService.getToken() || ''
-      }),
-      params: {
-        'idThread': idThread
-      }
+    const params = {
+      'idThread': idThread
     };
-    return new Observable(observer => {
-      this.apiService.get(url, httpOptions)
-        .subscribe((data) => {
-            if (Array.isArray(data.messages)) {
-              this.listThreads[idThread] = data.messages;
-            }
-            observer.next(data);
-            observer.complete();
-          },
-          (error) => {
-            observer.error(error);
-            observer.complete();
-          });
-    });
+    return this.apiService.get(url, params)
+      .map((data) => {
+        if (Array.isArray(data.messages)) {
+          if (!this.listThreads[idThread]) {
+            this.listThreads[idThread] = new ReplaySubject(1);
+          }
+          this.listThreads[idThread].next(data.messages);
+        }
+        return data;
+      });
   }
 
   public clearMessageAtThread(idThread: string) {
     const url = AppSettings.API_URL + '/message/clear';
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'authorization': this.authService.getToken() || ''
-      }),
-      params: {}
-    };
     const bodyParams = {
       'idThread': idThread
     };
-    return new Observable(observer => {
-      this.apiService.post(url, bodyParams, httpOptions)
-        .subscribe((data) => {
-            this.listThreads[idThread] = [];
-            observer.next(data);
-            observer.complete();
-          },
-          (error) => {
-            observer.error(error);
-            observer.complete();
-          });
-    });
+    return this.apiService.post(url, bodyParams)
+      .map((data) => {
+        if (!this.listThreads[idThread]) {
+          this.listThreads[idThread].next([]);
+        }
+        return data;
+      });
   }
 
 }

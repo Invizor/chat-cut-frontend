@@ -4,11 +4,11 @@ import { AppSettings } from '../../app-config';
 import { User } from '../models/user.model';
 import { HttpClient, HttpParams, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
+import {ReplaySubject} from 'rxjs/ReplaySubject';
 
 @Injectable()
 export class AuthService {
-  user: User;
-  token = null;
+  private _user: ReplaySubject<User> = new ReplaySubject(1);
 
   constructor(
     private apiService: ApiService
@@ -19,17 +19,12 @@ export class AuthService {
   private init() {
     if (this.checkToken()) {
       this.getUser()
-        .subscribe(user => {
-        });
+        .subscribe(user => {});
     }
   }
 
   public checkAuthorization() {
     return Boolean(this.checkToken());
-  }
-
-  public getUserLocalData() {
-    return this.user;
   }
 
   public checkToken() {
@@ -39,9 +34,6 @@ export class AuthService {
 
   public getToken() {
     let tokenResult = null;
-    if (typeof(this.token) === 'string' && this.token.length > 0) {
-      tokenResult = this.token;
-    }
     const tokenLS = window.localStorage.getItem('token');
     if (typeof(tokenLS) === 'string' && tokenLS.length > 0) {
       tokenResult = tokenLS;
@@ -51,8 +43,8 @@ export class AuthService {
 
   public setToken(token) {
     if (typeof(token) === 'string' && token.length > 0) {
-      this.token = token;
       window.localStorage.setItem('token', token);
+      this.apiService.setToken(token);
     }
   }
 
@@ -79,104 +71,61 @@ export class AuthService {
 
   public getUser(): Observable<User> {
     const url = AppSettings.API_URL + '/user/';
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'authorization': this.getToken() || ''
-      }),
-      params: {}
-    };
-
-    return new Observable(observer => {
-      this.apiService.get(url, httpOptions)
-        .subscribe(data => {
-          this.user = data.user;
-          observer.next(data.user);
-          observer.complete();
-        },
-        (error) => {
-          observer.error(error);
-          observer.complete();
+    const token = window.localStorage.getItem('token');
+    if (this.checkAuthorization()) {
+      this.apiService.setToken(token);
+      return this.apiService
+        .get(url)
+        .map((data) => {
+          if (data.user) {
+            this._user.next(data.user);
+          } else {
+            this._user.next(null);
+          }
+          return data;
         });
-    });
+    } else {
+      this._user.next(null);
+      return this._user.asObservable();
+    }
   }
 
   public registerUser(user: User) {
     const url = AppSettings.API_URL + '/user/register';
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'authorization': this.getToken() || ''
-      })
-    };
-
-    return new Observable(observer => {
-      this.apiService.post(url, user, httpOptions)
-        .subscribe(userData => {
-          this.user = userData ;
-          observer.next(userData);
-          observer.complete();
-        },
-        (error) => {
-          observer.error(error);
-          observer.complete();
-        });
-    });
+    return this.apiService.post(url, user)
+      .flatMap(userData => {
+        return this.loginUser(userData.user.email, userData.user.password);
+      });
   }
 
   public loginUser(email: string, password: string) {
     const url = AppSettings.API_URL + '/user/login';
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'authorization': this.getToken() || ''
-      })
-    };
     const bodyParams = {
       email: email,
       password: password
     };
-    return new Observable(observer => {
-      this.apiService.post(url, bodyParams, httpOptions)
-        .subscribe(result => {
-          if (typeof(result.token) === 'string') {
-            this.setToken(result.token);
-          }
-          if (result.user) {
-            this.user = result.user;
-          }
-          observer.next(result);
-          observer.complete();
-        },
-        (error) => {
-          observer.error(error);
-          observer.complete();
-        });
-    });
+    return this.apiService.post(url, bodyParams)
+      .map(result => {
+        if (result.user && result.token) {
+          this.setToken(result.token);
+          this.apiService.setToken(result.token);
+          this._user.next(result.user);
+        } else {
+          this._user.next(null);
+        }
+        return result;
+      });
   }
 
   public findUser(username: string): Observable<string> {
     const url = AppSettings.API_URL + '/user/find';
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'authorization': this.getToken() || ''
-      })
-    };
     const bodyParams = {
       username: username
     };
-    return new Observable(observer => {
-      this.apiService.post(url, bodyParams, httpOptions)
-        .subscribe(result => {
-            observer.next(result.id);
-            observer.complete();
-          },
-          (error) => {
-            observer.error(error);
-            observer.complete();
-          });
-    });
+    return this.apiService.post(url, bodyParams)
+      .map(result => {
+        return result;
+      });
   }
 
 }

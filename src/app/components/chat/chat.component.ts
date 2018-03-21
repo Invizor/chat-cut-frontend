@@ -30,7 +30,7 @@ export class ChatComponent implements OnInit, DoCheck {
       .subscribe(user => {
         this.user = user;
         if (this.user) {
-          this.threadService.getThreads(this.user['_id'])
+          this.threadService.getThreads()
             .subscribe(listThreads => {
               this.listThreads = listThreads;
               this.listThreads.forEach(thread => {

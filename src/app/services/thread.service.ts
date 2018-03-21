@@ -5,11 +5,11 @@ import {AppSettings} from '../../app-config';
 import {HttpClient, HttpParams, HttpHeaders} from '@angular/common/http';
 import {AuthService} from './auth.service';
 import {Observable} from 'rxjs/Observable';
+import {ReplaySubject} from 'rxjs/ReplaySubject';
 
 @Injectable()
 export class ThreadService {
-
-  listThreads: Thread[] = [];
+  private _threadsList: ReplaySubject<Thread[]> = new ReplaySubject(1);
 
   constructor(
     private apiService: ApiService,
@@ -23,112 +23,48 @@ export class ThreadService {
 
   public getThread(idThread) {
     const url = AppSettings.API_URL + '/thread/';
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'authorization': this.authService.getToken() || ''
-      }),
-      params: {
-        'id': idThread
-      }
+    const params = {
+      'id': idThread
     };
-    return new Observable(observer => {
-      this.apiService.get(url, httpOptions)
-        .subscribe((data) => {
-          observer.next(data);
-          observer.complete();
-        },
-        (error) => {
-          observer.error(error);
-          observer.complete();
-        });
-    });
+    return this.apiService.get(url, params)
+      .map((data) => {
+        return data;
+      });
   }
 
   public createThread(listIdUsers: string[]) {
     const url = AppSettings.API_URL + '/thread/create';
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'authorization': this.authService.getToken() || ''
-      }),
-      params: {}
-    };
     const body = {
       listIdUsers: listIdUsers
     };
-    return new Observable(observer => {
-      this.apiService.post(url, body, httpOptions)
-        .subscribe(
-        result => {
-          if (result.thread) {
-            this.listThreads.push(result.thread);
-          }
-          observer.next(result);
-          observer.complete();
-        },
-        (error) => {
-          observer.error(error);
-          observer.complete();
-        });
-    });
+    return this.apiService.post(url, body)
+      .flatMap(result => {
+        return this.getThreads();
+      });
   }
 
   public removeThread(idThread: string) {
     const url = AppSettings.API_URL + '/thread/remove';
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'authorization': this.authService.getToken() || ''
-      }),
-      params: {}
-    };
     const body = {
       id: idThread
     };
 
-    return new Observable(observer => {
-      this.apiService.post(url, body, httpOptions)
-        .subscribe((result) => {
-          if (result) {
-            this.listThreads = this.listThreads.filter(item => item._id !== idThread);
-          }
-          observer.next(result);
-          observer.complete();
-        },
-        (error) => {
-          observer.error(error);
-          observer.complete();
-        });
-    });
+    return this.apiService.post(url, body)
+      .flatMap((result) => {
+        return this.getThreads();
+      });
   }
 
-  public getThreads(idUser: string): Observable<Thread[]> {
+  public getThreads(): Observable<Thread[]> {
     const url = AppSettings.API_URL + '/thread/get';
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'authorization': this.authService.getToken() || ''
-      }),
-      params: {
-        'iduser': idUser
-      }
-    };
 
-    return new Observable(observer => {
-      this.apiService.get(url, httpOptions)
-        .subscribe((data) => {
-          if (data && Array.isArray(data.listThreads)) {
-            this.listThreads = data.listThreads;
-          }
-          observer.next(data.listThreads);
-          observer.complete();
-        },
-        (error) => {
-          observer.error(error);
-          observer.complete();
-        });
-    });
+    return this.apiService.get(url)
+      .map((data) => {
+        if (data && Array.isArray(data.listThreads)) {
+          this._threadsList.next(data.listThreads);
+        }
+        return data;
+      });
   }
 
 }
