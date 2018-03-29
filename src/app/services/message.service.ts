@@ -58,7 +58,7 @@ export class MessageService {
           }
           this.listThreads[idThread].next(data.messages);
         }
-        return data;
+        return data.messages;
       });
   }
 

@@ -63,7 +63,7 @@ export class ThreadService {
         if (data && Array.isArray(data.listThreads)) {
           this._threadsList.next(data.listThreads);
         }
-        return data;
+        return data.listThreads;
       });
   }
 

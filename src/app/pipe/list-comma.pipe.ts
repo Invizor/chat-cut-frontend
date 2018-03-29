@@ -7,6 +7,6 @@ export class ListCommaCurrentField implements PipeTransform {
     const list = value.map(item => {
       return item[fieldName];
     });
-    return list.join(',');
+    return list.join(', ');
   }
 }

@@ -32,6 +32,7 @@
 .c-chat-window .content .thread-list {
   box-shadow: 0 0 2px rgba(0,0,0,0.5);
   border-right: 1px solid;
+  overflow: auto;
 }
 
 @media(min-width: 1000px) {
@@ -46,8 +47,43 @@
   }
 }
 
+.c-chat-window .content .thread-list .item-thread {
+  height: 70px;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 5px;
+  border-bottom: 1px solid;
+  cursor: pointer;
+}
+
+.c-chat-window .content .thread-list .item-thread.active-thread {
+  background: #e6f2ff;
+}
+
+.c-chat-window .content .thread-list .item-thread.active-thread:hover {
+  background: #e6f2ff;
+}
+
+.c-chat-window .content .thread-list .item-thread:hover {
+  background: #f4f6f6;
+}
+
+.c-chat-window .content .thread-list .item-thread .title-thread {
+  height: 20px;
+  width: 100%;
+  border-bottom: 1px dashed;
+  white-space: nowrap;
+  padding-right: 30px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .c-chat-window .content .window-messages {
   flex: auto;
+  overflow: auto;
 }
 
 .c-chat-window .control-footer {

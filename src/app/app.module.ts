@@ -13,6 +13,7 @@ import { AuthService } from './services/auth.service';
 import { MessageService } from './services/message.service';
 import { ThreadService } from './services/thread.service';
 import { ListCommaCurrentField } from './pipe/list-comma.pipe';
+import { ListCommaEqualField } from './pipe/list-comma-equal.pipi';
 
 import { AppComponent } from './app.component';
 import { ChatComponent } from './components/chat/chat.component';
@@ -104,7 +105,8 @@ export class MaterialModule {}
     RegistrationComponent,
     SuccessIconComponent,
     ModalNewThreadComponent,
-    ListCommaCurrentField
+    ListCommaCurrentField,
+    ListCommaEqualField
   ],
   imports: [
     BrowserModule,

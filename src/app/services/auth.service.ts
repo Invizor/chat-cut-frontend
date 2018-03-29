@@ -9,6 +9,7 @@ import {ReplaySubject} from 'rxjs/ReplaySubject';
 @Injectable()
 export class AuthService {
   private _user: ReplaySubject<User> = new ReplaySubject(1);
+  isLoaded = false;
 
   constructor(
     private apiService: ApiService
@@ -17,14 +18,14 @@ export class AuthService {
   }
 
   private init() {
-    if (this.checkToken()) {
-      this.getUser()
-        .subscribe(user => {});
-    }
+    this.getUser()
+      .subscribe(user => {
+      });
   }
 
   public checkAuthorization() {
-    return Boolean(this.checkToken());
+    const token = localStorage.getItem('token');
+    return (this.checkToken() && this.isLoaded);
   }
 
   public checkToken() {
@@ -33,19 +34,16 @@ export class AuthService {
   }
 
   public getToken() {
-    let tokenResult = null;
-    const tokenLS = window.localStorage.getItem('token');
-    if (typeof(tokenLS) === 'string' && tokenLS.length > 0) {
-      tokenResult = tokenLS;
-    }
-    return tokenResult;
+    return localStorage.getItem('token');
   }
 
   public setToken(token) {
-    if (typeof(token) === 'string' && token.length > 0) {
-      window.localStorage.setItem('token', token);
-      this.apiService.setToken(token);
+    if (token) {
+      localStorage.setItem('token', token);
+    } else {
+      localStorage.removeItem('token');
     }
+    this.apiService.setToken(token);
   }
 
   public validateAuthData(email: string, password: string) {
@@ -69,25 +67,38 @@ export class AuthService {
     return {isValid: isValid, errorObj: errorObj};
   }
 
-  public getUser(): Observable<User> {
+  public setUser(user) {
+    this.isLoaded = Boolean(user);
+    this._user.next(user);
+  }
+
+  public getUser(): Observable<any> {
     const url = AppSettings.API_URL + '/user/';
     const token = window.localStorage.getItem('token');
+    this.apiService.setToken(token);
     if (this.checkAuthorization()) {
-      this.apiService.setToken(token);
-      return this.apiService
-        .get(url)
-        .map((data) => {
-          if (data.user) {
-            this._user.next(data.user);
-          } else {
-            this._user.next(null);
-          }
-          return data;
-        });
-    } else {
-      this._user.next(null);
       return this._user.asObservable();
+    } else {
+      if (this.getToken()) {
+        return this.apiService
+          .get(url)
+          .map((data) => {
+            if (data.user) {
+              this.setUser(data.user);
+            } else {
+              this.setUser(null);
+            }
+            return data;
+          });
+      } else {
+        this.setUser(null);
+        return this._user.asObservable();
+      }
     }
+  }
+
+  public getUserLocalData(): Observable<User> {
+    return this._user.asObservable();
   }
 
   public registerUser(user: User) {
@@ -108,10 +119,9 @@ export class AuthService {
       .map(result => {
         if (result.user && result.token) {
           this.setToken(result.token);
-          this.apiService.setToken(result.token);
-          this._user.next(result.user);
+          this.setUser(result.user);
         } else {
-          this._user.next(null);
+          this.setUser(null);
         }
         return result;
       });
@@ -121,6 +131,17 @@ export class AuthService {
     const url = AppSettings.API_URL + '/user/find';
     const bodyParams = {
       username: username
+    };
+    return this.apiService.post(url, bodyParams)
+      .map(result => {
+        return result;
+      });
+  }
+
+  public getUsersName(listIdUsers: string[]): Observable<any> {
+    const url = AppSettings.API_URL + '/user/get-users-name';
+    const bodyParams = {
+      listIdUsers: listIdUsers
     };
     return this.apiService.post(url, bodyParams)
       .map(result => {

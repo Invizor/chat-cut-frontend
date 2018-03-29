@@ -25,10 +25,28 @@
   </div>
   <div class="content">
     <div class="thread-list">
-
+      <div
+      [ngClass]="{'active-thread': thread._id === idSelectThread}"
+      class="item-thread" *ngFor="let thread of listThreads"
+      (click)="selectCurrentThread(thread._id)"
+      >
+        <div class="title-thread">
+          {{thread.listIdUsers | listCommaEqualField : objUserNames}}
+        </div>
+      </div>
     </div>
     <div class="window-messages">
-
+      <div class="messages-list" *ngIf="currentThread">
+        <div
+        [ngClass]="{'my-message': message.idUser === user._id, 'not-my-message': message.idUser !== user._id}"
+        class="message-item"
+        *ngFor="let message of currentThread.messageList"
+        >
+          <div class="title">{{objUserNames[message.idUser]}}</div>
+          <div class="date">{{message.date}}</div>
+          <div class="text">{{message.text}}</div>
+        </div>
+      </div>
     </div>
   </div>
   <div class="control-footer">
@@ -36,12 +54,11 @@
 
     </div>
     <div class="field-enter-text">
-      <textarea>
-
+      <textarea [(ngModel)]="messageModel">
       </textarea>
     </div>
     <div class="control-send-message">
-      <i class="material-icons">send</i>
+      <i (click)="sendMessage()" class="material-icons">send</i>
     </div>
   </div>
 
