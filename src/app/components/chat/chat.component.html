@@ -42,9 +42,13 @@
         class="message-item"
         *ngFor="let message of currentThread.messageList"
         >
-          <div class="title">{{objUserNames[message.idUser]}}</div>
-          <div class="date">{{message.date}}</div>
-          <div class="text">{{message.text}}</div>
+          <div class="content-item">
+            <div class="title">
+              <div class="username">{{objUserNames[message.idUser]}}</div>
+              <div class="date">{{message.date | dateTimeFormat}}</div>
+            </div>
+            <div class="text">{{message.text}}</div>
+          </div>
         </div>
       </div>
     </div>

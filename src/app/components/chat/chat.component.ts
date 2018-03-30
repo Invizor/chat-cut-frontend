@@ -1,4 +1,4 @@
-import { Component, OnInit, DoCheck } from '@angular/core';
+import { Component, OnInit, DoCheck, ChangeDetectorRef  } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { ThreadService } from '../../services/thread.service';
 import { MessageService } from '../../services/message.service';
@@ -25,7 +25,8 @@ export class ChatComponent implements OnInit, DoCheck {
     private authService: AuthService,
     private threadService: ThreadService,
     private messageService: MessageService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private chRef: ChangeDetectorRef
   ) {
   }
 
@@ -47,13 +48,6 @@ export class ChatComponent implements OnInit, DoCheck {
 
   prepareListThreads() {
     this.selectCurrentThread(this.listThreads[0]['_id']);
-    this.listThreads.forEach(thread => {
-      this.messageService.getMessages(thread['_id'])
-        .subscribe(messageList => {
-          thread.messageList = messageList;
-          console.log("this.listThreads", this.listThreads);
-        });
-    });
     const listIdUsersFromAllThreads = [];
     this.listThreads.forEach(thread => {
       thread.listIdUsers.forEach(id => {
@@ -98,7 +92,7 @@ export class ChatComponent implements OnInit, DoCheck {
         .subscribe(messages => {
           this.messageModel = '';
           this.listThreads.forEach(thread => {
-            if (thread === this.currentThread._id) {
+            if (thread._id === this.currentThread._id) {
               thread.messageList = messages;
               this.currentThread = thread;
             }

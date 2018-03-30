@@ -10,6 +10,7 @@ import {ReplaySubject} from 'rxjs/ReplaySubject';
 @Injectable()
 export class ThreadService {
   private _threadsList: ReplaySubject<Thread[]> = new ReplaySubject(1);
+  isLoadThreads = false;
 
   constructor(
     private apiService: ApiService,
@@ -19,6 +20,23 @@ export class ThreadService {
   }
 
   private init() {
+    this.checkThreads();
+  }
+
+  private setThreads(threads) {
+    this.isLoadThreads = Boolean(threads);
+    this._threadsList.next(threads);
+  }
+
+  private checkThreads() {
+    let subThreads = null;
+    setInterval( () => {
+      this.isLoadThreads = false;
+      if (subThreads) {
+        subThreads.unsubscribe();
+      }
+      subThreads = this.getThreads().subscribe(() => {});
+    } , 10000);
   }
 
   public getThread(idThread) {
@@ -56,15 +74,19 @@ export class ThreadService {
   }
 
   public getThreads(): Observable<Thread[]> {
-    const url = AppSettings.API_URL + '/thread/get';
+    if (this.isLoadThreads) {
+      return this._threadsList.asObservable();
+    } else {
+      const url = AppSettings.API_URL + '/thread/get';
 
-    return this.apiService.get(url)
-      .map((data) => {
-        if (data && Array.isArray(data.listThreads)) {
-          this._threadsList.next(data.listThreads);
-        }
-        return data.listThreads;
-      });
+      return this.apiService.get(url)
+        .map((data) => {
+          if (data && Array.isArray(data.listThreads)) {
+            this.setThreads(data.listThreads);
+          }
+          return data.listThreads;
+        });
+    }
   }
 
 }
