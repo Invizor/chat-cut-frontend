@@ -15,6 +15,7 @@ import { ThreadService } from './services/thread.service';
 import { ListCommaCurrentField } from './pipe/list-comma.pipe';
 import { ListCommaEqualField } from './pipe/list-comma-equal.pipi';
 import { DateTimeFormat } from './pipe/date-time-format.pipe';
+import {PrepareTextMessage} from './pipe/prepare-text-message.pipe';
 
 import { AppComponent } from './app.component';
 import { ChatComponent } from './components/chat/chat.component';
@@ -108,7 +109,8 @@ export class MaterialModule {}
     ModalNewThreadComponent,
     ListCommaCurrentField,
     ListCommaEqualField,
-    DateTimeFormat
+    DateTimeFormat,
+    PrepareTextMessage
   ],
   imports: [
     BrowserModule,

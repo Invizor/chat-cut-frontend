@@ -1,5 +1,8 @@
 <div class="c-modal-new-thread">
   <h1 mat-dialog-title>{{dataModal.user.username || ''}}</h1>
+  <div class="close-icon">
+    <i (click)="closeModal()" class="material-icons">clear</i>
+  </div>
   <div mat-dialog-content>
     <p class="modal-text">Please, enter login user, which you want to write: </p>
     <mat-form-field>

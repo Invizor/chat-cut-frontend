@@ -76,6 +76,7 @@
 .c-authorization .content .send-button {
   text-align: center;
   padding-top: 29px;
+  background: #ffffff;
 }
 
 .c-authorization .content .send-button i{

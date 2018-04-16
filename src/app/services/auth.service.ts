@@ -134,7 +134,7 @@ export class AuthService {
     };
     return this.apiService.post(url, bodyParams)
       .map(result => {
-        return result;
+        return result.id;
       });
   }
 
@@ -147,6 +147,11 @@ export class AuthService {
       .map(result => {
         return result;
       });
+  }
+
+  public logoutUser() {
+    this.setToken(null);
+    this.setUser(null);
   }
 
 }

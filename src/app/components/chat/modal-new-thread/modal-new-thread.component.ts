@@ -48,7 +48,6 @@ export class ModalNewThreadComponent implements OnInit {
               username: userName
             });
             this.viewListAddUser = viewList;
-            console.log("this.viewListAddUser", this.viewListAddUser);
           }
         }, error => {
           this.snackBar.open('User not found', 'close', {
@@ -62,13 +61,22 @@ export class ModalNewThreadComponent implements OnInit {
   createThread() {
     let listUsersAtThread = [];
     if (this.viewListAddUser && this.viewListAddUser.length > 0) {
-      listUsersAtThread = this.viewListAddUser.map(itemUser => itemUser.id);
+      console.log("this.viewListAddUser", this.viewListAddUser);
+      listUsersAtThread = this.viewListAddUser.map(itemUser => {
+        return itemUser.id;
+      });
       listUsersAtThread.push(this.dataModal.user['_id']);
       this.threadService.createThread(listUsersAtThread)
-        .subscribe(() => {});
+        .subscribe((result) => {
+          this.closeModal(result);
+        });
     } else {
       return;
     }
+  }
+
+  closeModal(result = null) {
+    this.dialogRef.close(result);
   }
 
   ngOnInit() {

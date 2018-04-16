@@ -28,6 +28,7 @@
   flex-direction: row;
   align-items: stretch;
   flex: 1 1 auto;
+  min-height: 0px;
 }
 
 .c-chat-window .content .thread-list {
@@ -59,6 +60,7 @@
   padding: 5px;
   border-bottom: 1px solid;
   cursor: pointer;
+  position: relative;
 }
 
 .c-chat-window .content .thread-list .item-thread.active-thread {
@@ -83,10 +85,29 @@
   text-overflow: ellipsis;
 }
 
+.c-chat-window .content .thread-list .item-thread .remove-icon {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.c-chat-window .content .thread-list .item-thread .remove-icon i {
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.c-chat-window .content .thread-list .item-thread .remove-icon i:hover {
+  font-size: 14px;
+  color: #888888;
+}
+
 .c-chat-window .content .window-messages {
   overflow: auto;
-  padding: 20px 20px 20px 20px;
   flex: auto;
+}
+
+.c-chat-window .content .window-messages .messages-list {
+  padding: 20px;
 }
 
 .c-chat-window .content .window-messages .messages-list .message-item.my-message {
@@ -141,6 +162,23 @@
   padding: 10px;
   border: 1px solid;
   border-radius: 7px;
+  position: relative;
+}
+
+.c-chat-window .content .window-messages .messages-list .message-item .content-item .remove-icon {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+
+.c-chat-window .content .window-messages .messages-list .message-item .content-item .remove-icon i {
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.c-chat-window .content .window-messages .messages-list .message-item .content-item .remove-icon i:hover {
+  font-size: 14px;
+  color: #888888;
 }
 
 .c-chat-window .content .window-messages .messages-list .message-item .content-item .title {

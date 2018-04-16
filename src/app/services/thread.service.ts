@@ -57,6 +57,7 @@ export class ThreadService {
     };
     return this.apiService.post(url, body)
       .flatMap(result => {
+        this.isLoadThreads = false;
         return this.getThreads();
       });
   }
@@ -69,6 +70,20 @@ export class ThreadService {
 
     return this.apiService.post(url, body)
       .flatMap((result) => {
+        this.isLoadThreads = false;
+        return this.getThreads();
+      });
+  }
+
+  public removeUserFromThread(idThread: string) {
+    const url = AppSettings.API_URL + '/thread/remove-user';
+    const body = {
+      id: idThread
+    };
+
+    return this.apiService.post(url, body)
+      .flatMap((result) => {
+        this.isLoadThreads = false;
         return this.getThreads();
       });
   }
@@ -80,11 +95,11 @@ export class ThreadService {
       const url = AppSettings.API_URL + '/thread/get';
 
       return this.apiService.get(url)
-        .map((data) => {
+        .flatMap((data) => {
           if (data && Array.isArray(data.listThreads)) {
             this.setThreads(data.listThreads);
           }
-          return data.listThreads;
+          return this._threadsList.asObservable();
         });
     }
   }

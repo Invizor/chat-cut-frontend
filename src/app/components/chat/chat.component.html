@@ -17,7 +17,7 @@
         <button mat-menu-item>
           <span>Settings</span>
         </button>
-        <button mat-menu-item>
+        <button mat-menu-item (click)="logoutUser()">
           <span>Logout</span>
         </button>
       </mat-menu>
@@ -28,14 +28,17 @@
       <div
       [ngClass]="{'active-thread': thread._id === idSelectThread}"
       class="item-thread" *ngFor="let thread of listThreads"
-      (click)="selectCurrentThread(thread._id)"
+      (click)="goToCurrentThread(thread._id)"
       >
         <div class="title-thread">
           {{thread.listIdUsers | listCommaEqualField : objUserNames}}
         </div>
+        <div class="remove-icon">
+          <i (click)="removeUserFromThread(thread._id, $event)" class="material-icons">clear</i>
+        </div>
       </div>
     </div>
-    <div class="window-messages">
+    <div class="window-messages" #scrollWindow>
       <div class="messages-list" *ngIf="currentThread">
         <div
         [ngClass]="{'my-message': message.idUser === user._id, 'not-my-message': message.idUser !== user._id}"
@@ -47,7 +50,10 @@
               <div class="username">{{objUserNames[message.idUser]}}</div>
               <div class="date">{{message.date | dateTimeFormat}}</div>
             </div>
-            <div class="text">{{message.text}}</div>
+            <div class="text" [innerHTML]="message.text | prepareTextMessage"></div>
+            <div class="remove-icon" *ngIf="message.idUser === user._id">
+              <i (click)="removeMessage(message._id)" class="material-icons">clear</i>
+            </div>
           </div>
         </div>
       </div>
@@ -58,7 +64,7 @@
 
     </div>
     <div class="field-enter-text">
-      <textarea [(ngModel)]="messageModel">
+      <textarea [(ngModel)]="messageModel" (keyup.enter)="sendMessage()">
       </textarea>
     </div>
     <div class="control-send-message">
