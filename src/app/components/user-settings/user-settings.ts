@@ -46,7 +46,7 @@ export class UserSettingsComponent implements OnInit {
     }
   }
 
-  openSelectFileInput() {
+  openSelectFileInput(event) {
     const element = document.getElementById('file-load-input');
     element.click();
   }

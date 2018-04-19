@@ -183,7 +183,7 @@ export class ChatComponent implements OnInit, DoCheck, OnDestroy {
     this.authService.logoutUser();
   }
 
-  openSelectFileInput() {
+  openSelectFileInput(event) {
     const element = document.getElementById('file-load');
     element.click();
   }
