@@ -26,6 +26,7 @@ export class ModalNewThreadComponent implements OnInit {
     if (typeof(userName) === 'string' && userName.length > 0) {
       this.authService.findUser(userName)
         .subscribe(idUser => {
+          console.log("idUser", idUser);
           if (idUser) {
             if (idUser === this.dataModal.user['_id']) {
               this.snackBar.open('You can not add yourself', 'close', {
@@ -50,6 +51,7 @@ export class ModalNewThreadComponent implements OnInit {
             this.viewListAddUser = viewList;
           }
         }, error => {
+          console.log("error", error);
           this.snackBar.open('User not found', 'close', {
             duration: 3000,
           });

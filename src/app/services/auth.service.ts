@@ -97,6 +97,11 @@ export class AuthService {
     }
   }
 
+  updateUser(): Observable<any> {
+    this.isLoaded = false;
+    return this.getUser();
+  }
+
   public getUserLocalData(): Observable<User> {
     return this._user.asObservable();
   }
@@ -138,8 +143,8 @@ export class AuthService {
       });
   }
 
-  public getUsersName(listIdUsers: string[]): Observable<any> {
-    const url = AppSettings.API_URL + '/user/get-users-name';
+  public getUsersInfo(listIdUsers: string[]): Observable<any> {
+    const url = AppSettings.API_URL + '/user/get-users-info';
     const bodyParams = {
       listIdUsers: listIdUsers
     };

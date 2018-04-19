@@ -10,11 +10,15 @@
     <div class="logo-control">
       <div class="icon-app-cut">
       </div>
+      <div class="user-avatar" routerLink="/settings">
+        <i *ngIf="!user.avatar" class="material-icons">person</i>
+        <img *ngIf="user.avatar" src="{{user.avatar}}" class="image-avatar">
+      </div>
       <button class="burger-control" mat-icon-button [matMenuTriggerFor]="menu">
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item>
+        <button mat-menu-item routerLink="/settings">
           <span>Settings</span>
         </button>
         <button mat-menu-item (click)="logoutUser()">
@@ -27,11 +31,24 @@
     <div class="thread-list">
       <div
       [ngClass]="{'active-thread': thread._id === idSelectThread}"
-      class="item-thread" *ngFor="let thread of listThreads"
+      class="item-thread" *ngFor="let thread of listThreads | sortThreadByLastMessage"
       (click)="goToCurrentThread(thread._id)"
       >
         <div class="title-thread">
-          {{thread.listIdUsers | listCommaEqualField : objUserNames}}
+          <div class="item-title-user" *ngFor="let idUser of thread.listIdUsers">
+            <div class="content-item-user" *ngIf="objUserInfo[idUser]">
+              <div class="username" *ngIf="objUserInfo[idUser].username">
+                {{ objUserInfo[idUser].username }}
+              </div>
+              <div class="logo">
+                <i *ngIf="!objUserInfo[idUser].avatar" class="material-icons">person</i>
+                <img *ngIf="objUserInfo[idUser].avatar" src="{{objUserInfo[idUser].avatar}}">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="last-message">
+          {{thread.messageList | lastMessage}}
         </div>
         <div class="remove-icon">
           <i (click)="removeUserFromThread(thread._id, $event)" class="material-icons">clear</i>
@@ -45,10 +62,23 @@
         class="message-item"
         *ngFor="let message of currentThread.messageList"
         >
+          <div class="logo" *ngIf="objUserInfo[message.idUser]">
+            <i *ngIf="!objUserInfo[message.idUser].avatar" class="material-icons">person</i>
+            <img *ngIf="objUserInfo[message.idUser].avatar" src="{{objUserInfo[message.idUser].avatar}}">
+          </div>
           <div class="content-item">
             <div class="title">
-              <div class="username">{{objUserNames[message.idUser]}}</div>
-              <div class="date">{{message.date | dateTimeFormat}}</div>
+              <div class="username" *ngIf="objUserInfo[message.idUser] && objUserInfo[message.idUser].username">
+                {{objUserInfo[message.idUser].username}}
+              </div>
+              <div class="date">
+                {{message.date | dateTimeFormat}}
+              </div>
+            </div>
+            <div class="files-container" *ngIf="message.files &&  message.files.length > 0">
+              <div class="file-item" *ngFor="let fileUrl of message.files">
+                <img src="{{fileUrl}}">
+              </div>
             </div>
             <div class="text" [innerHTML]="message.text | prepareTextMessage"></div>
             <div class="remove-icon" *ngIf="message.idUser === user._id">
@@ -63,13 +93,39 @@
     <div class="empty-block">
 
     </div>
-    <div class="field-enter-text">
-      <textarea [(ngModel)]="messageModel" (keyup.enter)="sendMessage()">
-      </textarea>
-    </div>
-    <div class="control-send-message">
-      <i (click)="sendMessage()" class="material-icons">send</i>
+    <div class="control-block">
+      <div class="files-preview" *ngIf="filesModel && filesModel.length > 0">
+        <div class="image-container" *ngFor="let urlImage of filesModel; index as ind" [attr.data-index]="ind">
+          <div class="image">
+            <img src="{{urlImage}}">
+          </div>
+          <i (click)="removeFileFromMessage(ind)" class="material-icons remove-icon">clear</i>
+        </div>
+      </div>
+      <div class="control-content">
+        <div class="smile-control">
+          <i (click)="openSmileWindow()" class="material-icons">insert_emoticon</i>
+          <emoji-mart *ngIf="isOpenSmileWindow" title="Pick your emoji…" emoji="point_up" (emojiClick)="addEmoji($event)">
+          </emoji-mart>
+        </div>
+        <div class="attach-file-control">
+          <i class="material-icons" (click)="openSelectFileInput($event)">attach_file</i>
+          <input
+            type="file"
+            id="file-load"
+            class="file-load"
+            (change)="selectImagesAtInput($event)"
+            multiple
+          >
+        </div>
+        <div class="field-enter-text">
+          <textarea [(ngModel)]="messageModel" (keyup.enter)="sendMessage()">
+          </textarea>
+        </div>
+        <div class="control-send-message">
+          <i (click)="sendMessage()" class="material-icons">send</i>
+        </div>
+      </div>
     </div>
   </div>
-
 </div>

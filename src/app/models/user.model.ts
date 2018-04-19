@@ -6,4 +6,5 @@ export class User {
   name?: string;
   surname?: string;
   listIdThreads?: string[];
+  avatar?: string;
 }

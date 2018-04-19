@@ -22,11 +22,12 @@ export class MessageService {
   private init() {
   }
 
-  public createMessage(idThread: string, text: string) {
+  public createMessage(idThread: string, text: string, files?: string[]) {
     const url = AppSettings.API_URL + '/message/create';
     const bodyParams = {
       idThread: idThread,
-      text: text
+      text: text,
+      files: files
     };
     return this.apiService.post(url, bodyParams)
         .flatMap((data) => {

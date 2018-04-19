@@ -4,18 +4,23 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing/app-routing.module';
+import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { ChatGuard } from './app-routing/guards-activate/chat-guards';
 import { AuthorizationGuard } from './app-routing/guards-activate/authorization-guards';
 import { RegistrationGuard } from './app-routing/guards-activate/registration-guards';
+import { UserSettingsGuard } from './app-routing/guards-activate/user-settings-guards';
 
 import { ApiService } from './services/api.service';
 import { AuthService } from './services/auth.service';
 import { MessageService } from './services/message.service';
 import { ThreadService } from './services/thread.service';
+import {ImageService} from './services/image.service';
 import { ListCommaCurrentField } from './pipe/list-comma.pipe';
 import { ListCommaEqualField } from './pipe/list-comma-equal.pipi';
 import { DateTimeFormat } from './pipe/date-time-format.pipe';
 import {PrepareTextMessage} from './pipe/prepare-text-message.pipe';
+import {LastMessage} from './pipe/last-message.pipe';
+import {SortThreadByLastMessage} from './pipe/sort-thread-by-last-message';
 
 import { AppComponent } from './app.component';
 import { ChatComponent } from './components/chat/chat.component';
@@ -24,6 +29,7 @@ import { RegistrationComponent } from './components/registration/registration.co
 import { CustomValidators } from './validators/validators';
 import { SuccessIconComponent } from './components/common/success-icon/success-icon.component';
 import { ModalNewThreadComponent } from './components/chat/modal-new-thread/modal-new-thread.component';
+import { UserSettingsComponent } from './components/user-settings/user-settings';
 
 import {
   MatAutocompleteModule,
@@ -107,10 +113,13 @@ export class MaterialModule {}
     RegistrationComponent,
     SuccessIconComponent,
     ModalNewThreadComponent,
+    UserSettingsComponent,
     ListCommaCurrentField,
     ListCommaEqualField,
     DateTimeFormat,
-    PrepareTextMessage
+    PrepareTextMessage,
+    LastMessage,
+    SortThreadByLastMessage
   ],
   imports: [
     BrowserModule,
@@ -119,16 +128,19 @@ export class MaterialModule {}
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    PickerModule
   ],
   providers: [
     ChatGuard,
     AuthorizationGuard,
     RegistrationGuard,
+    UserSettingsGuard,
     ApiService,
     AuthService,
     ThreadService,
     MessageService,
+    ImageService,
     CustomValidators
   ],
   bootstrap: [AppComponent],

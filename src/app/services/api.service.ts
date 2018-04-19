@@ -14,12 +14,15 @@ export class ApiService {
   };
   constructor(private _http: HttpClient) {}
 
-  public get(path: string, params?: object): Observable<any> {
+  public get(path: string, params?: object, options = null): Observable<any> {
 
     let resultPath = path;
-    const resultOptions = {
+    let resultOptions = {
       headers: this.httpOptions.headers
     };
+    if (options) {
+      resultOptions = options;
+    }
 
     if (params) {
       resultPath += '?';
@@ -46,11 +49,14 @@ export class ApiService {
       });
   }
 
-  public post(path: string, params?: object): Observable<any> {
+  public post(path: string, params?: object, options = null): Observable<any> {
     const resultPath = path;
-    const resultOptions = {
+    let resultOptions = {
       headers: this.httpOptions.headers
     };
+    if (options) {
+      resultOptions = options;
+    }
     const resultBody = params;
 
     return this._http
@@ -63,7 +69,7 @@ export class ApiService {
           }
         });
         if (!data.success) {
-          return resultData;
+          throw resultData;
         }
 
         return resultData;

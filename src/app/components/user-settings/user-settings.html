@@ -1,0 +1,45 @@
+<div class="c-settings-user">
+  <div class="header">
+    <div class="back-control">
+      <i routerLink="/chat"  class="material-icons">keyboard_arrow_left</i>
+    </div>
+    <div class="app-title">
+      ChatCut
+    </div>
+    <div class="logo-control">
+      <div class="icon-app-cut">
+      </div>
+      <button class="burger-control" mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item routerLink="/settings">
+          <span>Settings</span>
+        </button>
+        <button mat-menu-item (click)="logoutUser()">
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+  <div class="content">
+    <div class="logo-block">
+      <div class="logo-container" (click)="openSelectFileInput($event)">
+        <input
+          type="file"
+          id="file-load-input"
+          class="file-load-input"
+          (change)="selectImagesAtInput($event)"
+        >
+        <i *ngIf="!user.avatar" class="material-icons">person</i>
+        <img *ngIf="user.avatar" src="{{user.avatar}}" class="image-avatar">
+      </div>
+    </div>
+    <div class="info-block">
+      <div class="name text-field">{{'Name: ' + user.name}}</div>
+      <div class="surname text-field">{{'Surname: ' + user.surname}}</div>
+      <div class="username text-field">{{'Username: ' + user.username}}</div>
+      <div class="email text-field">{{'Email: ' + user.email}}</div>
+    </div>
+  </div>
+</div>

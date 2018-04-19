@@ -4,4 +4,5 @@ export class Message {
   idUser: string;
   text: string;
   date?: Date;
+  files?: string[];
 }

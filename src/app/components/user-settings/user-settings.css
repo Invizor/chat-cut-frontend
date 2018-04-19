@@ -1,0 +1,140 @@
+.c-settings-user {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  align-content: stretch;
+}
+
+.c-settings-user .header {
+  width: 100%;
+  height: 70px;
+  background: #5fadf4;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  box-shadow: 0 0 2px rgba(0,0,0,0.5);
+  border-bottom: 1px solid;
+  flex: 0 0 auto;
+}
+
+.c-settings-user .header .app-title {
+  color: #f4f6f6;
+  font-size: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 20px;
+}
+
+.c-settings-user .header .back-control {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.c-settings-user .header .back-control i {
+  font-size: 50px;
+  cursor: pointer;
+  color: #ffffff;
+}
+
+.c-settings-user .header .back-control i:hover {
+  font-size: 52px;
+  color: #888888;
+}
+
+
+.c-settings-user .header .logo-control {
+  height: 100%;
+  padding: 15px;
+  color: #f4f6f6;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.c-settings-user .header .logo-control .icon-app-cut {
+  width: 50px;
+  height: 50px;
+}
+
+.c-settings-user .header .logo-control .burger-control mat-icon {
+  font-size: 33px;
+}
+
+.c-settings-user .content {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex: 1 1 auto;
+  min-height: 0px;
+  box-shadow: 0 0 4px rgba(0,0,0,0.5);
+  background: #ffffff;
+}
+
+@media(min-width: 1200px) {
+  .c-settings-user .content {
+    width: 1200px;
+    margin: 0 auto;
+  }
+}
+
+@media(max-width: 1100px) {
+  .c-settings-user .content {
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+.c-settings-user .content .logo-block {
+  width: 100%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 40px;
+}
+
+.c-settings-user .content .logo-block .logo-container {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 1px solid #888888;
+  box-shadow: 0 0 2px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.c-settings-user .content .logo-block .logo-container i {
+  font-size: 150px;
+}
+
+.c-settings-user .content .logo-block .logo-container .file-load-input {
+  display: none;
+}
+
+.c-settings-user .content .logo-block .logo-container .image-avatar {
+  max-width: 200px;
+  max-height: 200px;
+}
+
+.c-settings-user .content .info-block {
+  width: 100%;
+  padding-top: 10px;
+  padding-left: 40px;
+}
+
+.c-settings-user .content .info-block .text-field {
+  font-size: 16px;
+  padding-top: 5px;
+}
+
+

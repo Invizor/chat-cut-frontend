@@ -51,13 +51,15 @@
 }
 
 .c-chat-window .content .thread-list .item-thread {
-  height: 70px;
+  height: 80px;
   width: 100%;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 5px;
   border-bottom: 1px solid;
   cursor: pointer;
   position: relative;
@@ -76,13 +78,72 @@
 }
 
 .c-chat-window .content .thread-list .item-thread .title-thread {
-  height: 20px;
+  height: 30px;
   width: 100%;
   border-bottom: 1px dashed;
   white-space: nowrap;
   padding-right: 30px;
   overflow: hidden;
   text-overflow: ellipsis;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.c-chat-window .content .thread-list .item-thread .title-thread .item-title-user {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding-right: 5px;
+}
+
+.c-chat-window .content .thread-list .item-thread .title-thread .item-title-user .content-item-user {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.c-chat-window .content .thread-list .item-thread .title-thread .item-title-user .content-item-user .username {
+
+}
+
+.c-chat-window .content .thread-list .item-thread .title-thread .item-title-user .content-item-user .logo {
+  margin-left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid #888888;
+  box-shadow: 0 0 2px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.c-chat-window .content .thread-list .item-thread .title-thread .item-title-user .content-item-user .logo i {
+  font-size: 18px;
+}
+
+.c-chat-window .content .thread-list .item-thread .title-thread .item-title-user .content-item-user .logo img {
+  max-width: 20px;
+  max-height: 20px;
+}
+
+.c-chat-window .content .thread-list .item-thread .last-message {
+  overflow: hidden;
+  padding-top: 7px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex: 1 1 auto;
+  min-height: 0px;
+  color: #000000;
 }
 
 .c-chat-window .content .thread-list .item-thread .remove-icon {
@@ -113,18 +174,18 @@
 .c-chat-window .content .window-messages .messages-list .message-item.my-message {
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: flex-start;
 }
 
 @media(min-width: 1000px) {
   .c-chat-window .content .window-messages .messages-list .message-item.my-message {
-    padding-left: 300px;
+    padding-right: 300px;
   }
 }
 
 @media(max-width: 999px) {
   .c-chat-window .content .window-messages .messages-list .message-item.my-message {
-    padding-left: 50px;
+    padding-right: 50px;
   }
 }
 
@@ -150,6 +211,31 @@
   }
 }
 
+.c-chat-window .content .window-messages .messages-list .message-item .logo {
+  margin-right: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #888888;
+  box-shadow: 0 0 2px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+
+.c-chat-window .content .window-messages .messages-list .message-item .logo i {
+  font-size: 30px;
+}
+
+.c-chat-window .content .window-messages .messages-list .message-item .logo img {
+  max-width: 40px;
+  max-height: 40px;
+}
+
 .c-chat-window .content .window-messages .messages-list .message-item.not-my-message .content-item{
   background: #ccffcc;
 }
@@ -159,10 +245,31 @@
   display: inline-flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding: 10px;
+  padding-top: 5px;
+  padding-left: 10px;
+  padding-right: 15px;
+  padding-bottom: 5px;
   border: 1px solid;
   border-radius: 7px;
   position: relative;
+  flex: 0 1 auto;;
+  min-width: 0px;
+}
+
+.c-chat-window .content .window-messages .messages-list .message-item .content-item .files-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: left;
+}
+
+.c-chat-window .content .window-messages .messages-list .message-item .content-item .files-container .file-item {
+  padding-bottom: 5px;
+}
+
+.c-chat-window .content .window-messages .messages-list .message-item .content-item .files-container .file-item img{
+  max-width: 300px;
+  max-height: 300px;
 }
 
 .c-chat-window .content .window-messages .messages-list .message-item .content-item .remove-icon {
@@ -191,7 +298,7 @@
 }
 
 .c-chat-window .content .window-messages .messages-list .message-item .content-item .title .username {
-  font-size: 16px;
+  font-size: 13px;
 }
 
 .c-chat-window .content .window-messages .messages-list .message-item .content-item .title .date {
@@ -209,7 +316,6 @@
 
 .c-chat-window .control-footer {
   width: 100%;
-  height: 100px;
   box-shadow: 0 0 2px rgba(0,0,0,0.5);
   border-top: 1px solid;
   display: flex;
@@ -218,23 +324,80 @@
   flex: 0 0 auto;
 }
 
-.c-chat-window .control-footer .control-send-message {
+.c-chat-window .control-footer .control-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0px;
+  flex: 1 1 auto;
+  position: relative;
+}
+
+
+.c-chat-window .control-footer .control-block .files-preview {
+  width: 100%;
+  padding: 10px;
+  padding-left: 120px;
+}
+
+.c-chat-window .control-footer .control-block .files-preview .image-container {
+  border: 1px solid #000000;
+  border-radius: 5px;
+  display: inline-flex;
+  margin-right: 15px;
+  position: relative;
+}
+
+.c-chat-window .control-footer .control-block .files-preview .image-container .image {
+  display: inline-flex;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.c-chat-window .control-footer .control-block .files-preview .image-container .remove-icon {
+  position: absolute;
+  top: -8px;
+  right: -13px;
+  cursor:  pointer;
+  font-size: 14px;
+  color: #000000;
+}
+
+.c-chat-window .control-footer .control-block .files-preview .image-container .image img {
+  max-width: 80px;
+  max-height: 80px;
+}
+
+.c-chat-window .control-footer .control-block .control-content {
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.c-chat-window .control-footer .control-block .control-content .control-send-message {
   width: 50px;
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 
-.c-chat-window .control-footer .control-send-message i {
+.c-chat-window .control-footer .control-block .control-content .control-send-message i {
   font-size: 40px;
   cursor: pointer;
-  transition: color 1s, font-size 1s;
+  transition: color 0.1s, font-size 0.5s;
 }
 
-.c-chat-window .control-footer .control-send-message i:hover {
+.c-chat-window .control-footer .control-block .control-content .control-send-message i:hover {
   font-size: 42px;
   cursor: pointer;
   color: #5fadf4;
+}
+
+.c-chat-window .control-footer .empty-block {
+  flex: 0 0 auto;
 }
 
 @media(min-width: 1000px) {
@@ -249,7 +412,49 @@
   }
 }
 
-.c-chat-window .control-footer .field-enter-text {
+.c-chat-window .control-footer .control-block .control-content .smile-control {
+  width: 50px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+}
+
+.c-chat-window .control-footer .control-block .control-content .smile-control i {
+  font-size: 45px;
+  cursor: pointer;
+  transition: color 0.1s, font-size 0.5s;
+}
+
+.c-chat-window .control-footer .control-block .control-content .smile-control i:hover {
+  font-size: 47px;
+  color: #5fadf4;
+}
+
+.c-chat-window .control-footer .control-block .control-content .attach-file-control {
+  width: 50px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.c-chat-window .control-footer .control-block .control-content .attach-file-control .file-load {
+  display: none;
+}
+
+.c-chat-window .control-footer .control-block .control-content .attach-file-control i {
+  font-size: 50px;
+  color: #888888;
+  cursor: pointer;
+  transition: color 0.1s, font-size 0.5s;
+}
+
+.c-chat-window .control-footer .control-block .control-content .attach-file-control i:hover {
+  font-size: 52px;
+  color: #5fadf4;
+}
+
+.c-chat-window .control-footer .control-block .control-content .field-enter-text {
   padding-left: 20px;
   padding-right: 20px;
   padding-top: 10px;
@@ -257,15 +462,21 @@
   flex: auto;
 }
 
-.c-chat-window .control-footer .field-enter-text textarea {
+.c-chat-window .control-footer .control-block .control-content .field-enter-text textarea {
   width: 100%;
-  height: 100%;
+  height: 80px;
   border: 1px dashed;
   border-radius: 8px;
   outline:none;
   font-size: 14px;
   padding: 10px;
   resize: none;
+}
+
+.c-chat-window .control-footer .control-block emoji-mart {
+  position: absolute;
+  top: -423px;
+  left: 0px;
 }
 
 .c-chat-window .header .app-title {
@@ -315,6 +526,41 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+
+.c-chat-window .header .logo-control .user-avatar {
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+  border: 1px solid #888888;
+  box-shadow: 0 0 2px rgba(0,0,0,0.5);
+  cursor: pointer;
+}
+
+.c-chat-window .header .logo-control .user-avatar {
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+  border: 1px solid #888888;
+  border-radius: 50%;
+  box-shadow: 0 0 2px rgba(0,0,0,0.5);
+  cursor: pointer;
+  background: #ffffff;
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.c-chat-window .header .logo-control .user-avatar i {
+  font-size: 40px;
+  color: #888888;
+}
+
+.c-chat-window .header .logo-control .user-avatar img {
+  max-width: 50px;
+  max-height: 50px;
 }
 
 .c-chat-window .header .logo-control .icon-app-cut {
