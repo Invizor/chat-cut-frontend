@@ -119,7 +119,16 @@
           >
         </div>
         <div class="field-enter-text">
-          <textarea [(ngModel)]="messageModel" (keyup.enter)="sendMessage()">
+          <div
+            id="textarea-visual"
+            class="textarea-visual"
+            (input)="changeMessageVisual($event)"
+            [innerHTML]="messageModelVisual | prepareTextMessage"
+            contenteditable="true"
+            (keyup.enter)="sendMessage()"
+          >
+          </div>
+          <textarea [(ngModel)]="messageModel">
           </textarea>
         </div>
         <div class="control-send-message">

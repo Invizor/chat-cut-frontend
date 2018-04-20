@@ -26,6 +26,7 @@ export class ChatComponent implements OnInit, DoCheck, OnDestroy {
   idSelectThread: string;
   currentThread: Thread;
   messageModel = '';
+  messageModelVisual = '';
   filesModel = [];
   listSub = [];
   isOpenSmileWindow = false;
@@ -122,7 +123,7 @@ export class ChatComponent implements OnInit, DoCheck, OnDestroy {
     if (this.messageModel) {
       const messageForSend = this.messageModel;
       const listFilesForSend = this.filesModel;
-      this.messageModel = '';
+      this.clearTextArea();
       this.filesModel = [];
       this.messageService.createMessage(this.currentThread._id, messageForSend, listFilesForSend)
         .takeUntil(this.destroy$)
@@ -139,6 +140,12 @@ export class ChatComponent implements OnInit, DoCheck, OnDestroy {
 
         });
     }
+  }
+
+  clearTextArea() {
+    this.messageModel = '';
+    this.messageModelVisual = '';
+    document.getElementById('textarea-visual').innerHTML = '';
   }
 
   scrollToBottom(): void {
@@ -223,13 +230,18 @@ export class ChatComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   addEmoji(event) {
-    console.log("event", event);
-    if (event && event.emoji && event.emoji.native) {
-      this.messageModel += event.emoji.native;
-      // this.messageModel = emojiConv.replace_colons(this.messageModel);
+    if (event && event.emoji && event.emoji.colons) {
+      this.messageModel += event.emoji.colons;
     }
-    console.log("this.messageModel", this.messageModel);
+    this.messageModelVisual = this.messageModel;
     this.isOpenSmileWindow = false;
+  }
+
+  changeMessageVisual(event) {
+    console.log("event", event);
+    if (event && event.target && typeof(event.target.innerText) === 'string') {
+      this.messageModel = event.target.innerText;
+    }
   }
 
 }
