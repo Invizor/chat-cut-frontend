@@ -9,6 +9,8 @@ import { Message } from '../../models/message.model';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar} from '@angular/material';
 import {ModalNewThreadComponent} from './modal-new-thread/modal-new-thread.component';
 import {Subject} from 'rxjs/Subject';
+import {EmojiConvertor} from 'emoji-js';
+const emojiConv = new EmojiConvertor();
 
 @Component({
   selector: 'app-chat',
@@ -221,8 +223,9 @@ export class ChatComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   addEmoji(event) {
-    if (event && event.emoji && event.emoji.native) {
-      this.messageModel += event.emoji.native;
+    if (event && event.emoji && event.emoji.colons) {
+      this.messageModel += event.emoji.colons;
+      this.messageModel = emojiConv.replace_colons(this.messageModel);
     }
     this.isOpenSmileWindow = false;
   }

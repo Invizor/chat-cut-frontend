@@ -5,7 +5,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
-import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji'
+import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { ChatGuard } from './app-routing/guards-activate/chat-guards';
 import { AuthorizationGuard } from './app-routing/guards-activate/authorization-guards';
 import { RegistrationGuard } from './app-routing/guards-activate/registration-guards';
