@@ -223,10 +223,12 @@ export class ChatComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   addEmoji(event) {
+    console.log("event", event);
     if (event && event.emoji && event.emoji.colons) {
       this.messageModel += event.emoji.colons;
       this.messageModel = emojiConv.replace_colons(this.messageModel);
     }
+    console.log("this.messageModel", this.messageModel);
     this.isOpenSmileWindow = false;
   }
 
