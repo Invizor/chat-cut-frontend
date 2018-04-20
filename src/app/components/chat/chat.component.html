@@ -105,7 +105,7 @@
       <div class="control-content">
         <div class="smile-control">
           <i (click)="openSmileWindow()" class="material-icons">insert_emoticon</i>
-          <emoji-mart *ngIf="isOpenSmileWindow" title="Pick your emoji…" emoji="point_up" (emojiClick)="addEmoji($event)" native="true">
+          <emoji-mart *ngIf="isOpenSmileWindow" title="Pick your emoji…" emoji="point_up" (emojiClick)="addEmoji($event)">
           </emoji-mart>
         </div>
         <div class="attach-file-control">
